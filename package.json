@@ -12,9 +12,14 @@
     "test:perf": "k6 run tests/performance/load-test.js",
     "test:visual": "playwright test tests/e2e/visual",
     "test:visual:update": "playwright test tests/e2e/visual --update-snapshots",
-    "test:all": "npm run test:unit && npm run test:api && npm run test:e2e && npm run test:widget && npm run test:visual"
+    "test:ai": "playwright test tests/ai",
+    "test:all": "npm run test:unit && npm run test:api && npm run test:e2e && npm run test:widget && npm run test:visual && npm run test:ai",
+    "allure:generate": "allure generate allure-results --clean -o allure-report",
+    "allure:open": "allure open allure-report"
   },
   "devDependencies": {
-    "@playwright/test": "^1.44.0"
+    "@playwright/test": "^1.44.0",
+    "allure-commandline": "^2.30.0",
+    "allure-playwright": "^3.9.0"
   }
 }

@@ -1,0 +1,5 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","1232","should match initial landing page screenshot","chromium","2026-06-08","passed","2026-06-08","Visual Regression Tests","e2e\visual\visual.spec.ts","",""
+"","1278","should match successful validation page screenshot","chromium","2026-06-08","passed","2026-06-08","Visual Regression Tests","e2e\visual\visual.spec.ts","",""
+"","1312","should match error validation page screenshot","chromium","2026-06-08","passed","2026-06-08","Visual Regression Tests","e2e\visual\visual.spec.ts","",""
+"","1157","should match exit confirmation modal screenshot","chromium","2026-06-08","passed","2026-06-08","Visual Regression Tests","e2e\visual\visual.spec.ts","",""

@@ -55,10 +55,22 @@ jobs:
       - name: Run E2E Tests
         run: npm run test:e2e
 
-      - name: Upload Playwright Report
+      - name: Run Visual Regression Tests
+        run: npm run test:visual
+
+      - name: Run AI-assisted Tests
+        run: npm run test:ai
+
+      - name: Generate Allure Report
+        if: always()
+        run: npm run allure:generate
+
+      - name: Upload Test Reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
-          path: playwright-report/
+          name: test-reports
+          path: |
+            playwright-report/
+            allure-report/
           retention-days: 30

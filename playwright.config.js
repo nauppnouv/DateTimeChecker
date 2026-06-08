@@ -6,7 +6,10 @@ module.exports = defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: 1, // Set to 1 worker for stable sequential local execution
-  reporter: 'html',
+  reporter: [
+    ['html'],
+    ['allure-playwright', { outputFolder: 'allure-results' }]
+  ],
   use: {
     baseURL: 'http://localhost:8081',
     trace: 'on-first-retry',
