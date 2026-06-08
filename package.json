@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test:unit": "mvn test",
-    "test:e2e": "playwright test tests/e2e",
+    "test:e2e": "playwright test tests/e2e/datetime.spec.ts",
     "test:api": "playwright test tests/api",
     "test:mobile": "maestro test tests/mobile/datetime-flow.yaml",
     "test:widget": "cd flutter_app && flutter test",
     "test:perf": "k6 run tests/performance/load-test.js",
-    "test:all": "npm run test:unit && npm run test:api && npm run test:e2e && npm run test:widget"
+    "test:visual": "playwright test tests/e2e/visual",
+    "test:visual:update": "playwright test tests/e2e/visual --update-snapshots",
+    "test:all": "npm run test:unit && npm run test:api && npm run test:e2e && npm run test:widget && npm run test:visual"
   },
   "devDependencies": {
     "@playwright/test": "^1.44.0"

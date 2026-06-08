@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.fu.swt.datetimechecker.DateTimeControllerTest
+-------------------------------------------------------------------------------
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.299 s -- in com.fu.swt.datetimechecker.DateTimeControllerTest
