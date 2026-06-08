@@ -7,8 +7,10 @@
     "test:unit": "mvn test",
     "test:e2e": "playwright test tests/e2e",
     "test:api": "playwright test tests/api",
+    "test:mobile": "maestro test tests/mobile/datetime-flow.yaml",
+    "test:widget": "cd flutter_app && flutter test",
     "test:perf": "k6 run tests/performance/load-test.js",
-    "test:all": "npm run test:unit && npm run test:api && npm run test:e2e"
+    "test:all": "npm run test:unit && npm run test:api && npm run test:e2e && npm run test:widget"
   },
   "devDependencies": {
     "@playwright/test": "^1.44.0"

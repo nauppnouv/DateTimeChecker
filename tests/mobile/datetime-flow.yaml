@@ -1,0 +1,164 @@
+appId: com.fu.swt.datetimechecker
+name: DateTimeChecker Mobile App - Full Flow Tests
+
+---
+
+# ========================================
+# Test 1: Valid Date Input (25/5/2026)
+# ========================================
+- launchApp
+- assertVisible: "Date Time Checker"
+
+- tapOn:
+    id: "day-input"
+- inputText: "25"
+- tapOn:
+    id: "month-input"
+- inputText: "5"
+- tapOn:
+    id: "year-input"
+- inputText: "2026"
+- tapOn:
+    id: "check-button"
+- assertVisible: "25/5/2026 is correct date time!"
+
+# ========================================
+# Test 2: Clear Button
+# ========================================
+- tapOn:
+    id: "clear-button"
+- assertNotVisible: "25/5/2026 is correct date time!"
+
+# ========================================
+# Test 3: Invalid Date Input (31/11/2026)
+# ========================================
+- tapOn:
+    id: "day-input"
+- inputText: "31"
+- tapOn:
+    id: "month-input"
+- inputText: "11"
+- tapOn:
+    id: "year-input"
+- inputText: "2026"
+- tapOn:
+    id: "check-button"
+- assertVisible: "31/11/2026 is NOT correct date time!"
+
+# ========================================
+# Test 4: Leap Year Valid (29/2/2024)
+# ========================================
+- tapOn:
+    id: "clear-button"
+- tapOn:
+    id: "day-input"
+- inputText: "29"
+- tapOn:
+    id: "month-input"
+- inputText: "2"
+- tapOn:
+    id: "year-input"
+- inputText: "2024"
+- tapOn:
+    id: "check-button"
+- assertVisible: "29/2/2024 is correct date time!"
+
+# ========================================
+# Test 5: Non-Leap Year Invalid (29/2/2025)
+# ========================================
+- tapOn:
+    id: "clear-button"
+- tapOn:
+    id: "day-input"
+- inputText: "29"
+- tapOn:
+    id: "month-input"
+- inputText: "2"
+- tapOn:
+    id: "year-input"
+- inputText: "2025"
+- tapOn:
+    id: "check-button"
+- assertVisible: "29/2/2025 is NOT correct date time!"
+
+# ========================================
+# Test 6: Invalid Day Format
+# ========================================
+- tapOn:
+    id: "clear-button"
+- tapOn:
+    id: "day-input"
+- inputText: "abc"
+- tapOn:
+    id: "month-input"
+- inputText: "12"
+- tapOn:
+    id: "year-input"
+- inputText: "2020"
+- tapOn:
+    id: "check-button"
+- assertVisible: "Input data for Day is incorrect format!"
+
+# ========================================
+# Test 7: Day Out of Range
+# ========================================
+- tapOn:
+    id: "clear-button"
+- tapOn:
+    id: "day-input"
+- inputText: "32"
+- tapOn:
+    id: "month-input"
+- inputText: "10"
+- tapOn:
+    id: "year-input"
+- inputText: "2020"
+- tapOn:
+    id: "check-button"
+- assertVisible: "Input data for Day is out of range!"
+
+# ========================================
+# Test 8: Month Out of Range
+# ========================================
+- tapOn:
+    id: "clear-button"
+- tapOn:
+    id: "day-input"
+- inputText: "15"
+- tapOn:
+    id: "month-input"
+- inputText: "13"
+- tapOn:
+    id: "year-input"
+- inputText: "2020"
+- tapOn:
+    id: "check-button"
+- assertVisible: "Input data for Month is out of range!"
+
+# ========================================
+# Test 9: Year Out of Range
+# ========================================
+- tapOn:
+    id: "clear-button"
+- tapOn:
+    id: "day-input"
+- inputText: "15"
+- tapOn:
+    id: "month-input"
+- inputText: "08"
+- tapOn:
+    id: "year-input"
+- inputText: "999"
+- tapOn:
+    id: "check-button"
+- assertVisible: "Input data for Year is out of range!"
+
+# ========================================
+# Test 10: Exit Confirmation Dialog
+# ========================================
+- tapOn:
+    id: "close-button"
+- assertVisible: "Are you sure you want to exit?"
+- tapOn:
+    id: "confirm-no"
+- assertNotVisible: "Are you sure you want to exit?"
