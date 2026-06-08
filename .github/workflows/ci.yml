@@ -42,12 +42,15 @@ jobs:
           echo "Waiting for Spring Boot to start..."
           # Poll the check endpoint until it's up, max 60 seconds
           for i in {1..60}; do
-            if curl -s -f http://localhost:8080 > /dev/null; then
+            if curl -s -f http://localhost:8081 > /dev/null; then
               echo "Spring Boot app is ready!"
               break
             fi
             sleep 1
           done
+
+      - name: Run API Tests
+        run: npm run test:api
 
       - name: Run E2E Tests
         run: npm run test:e2e
