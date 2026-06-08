@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -46,11 +47,17 @@ class _DateTimeCheckerScreenState extends State<DateTimeCheckerScreen> {
   bool? _isSuccess;
   bool _isLoading = false;
 
-  // Change this URL depending on your environment:
-  // - Android Emulator: http://10.0.2.2:8081
-  // - iOS Simulator / Web (Chrome): http://localhost:8081
-  // - Physical device: http://<your-host-ip>:8081
-  static const String _baseUrl = 'http://localhost:8081';
+  // Dynamic URL depending on the running environment:
+  // - Android Emulator: http://10.0.2.2:8081 (redirects to host localhost)
+  // - iOS Simulator / Web / PC: http://localhost:8081
+  static String get _baseUrl {
+    if (kIsWeb) {
+      return 'http://localhost:8081';
+    }
+    return defaultTargetPlatform == TargetPlatform.android
+        ? 'http://10.0.2.2:8081'
+        : 'http://localhost:8081';
+  }
 
   Future<void> _checkDate() async {
     setState(() {
@@ -121,21 +128,27 @@ class _DateTimeCheckerScreenState extends State<DateTimeCheckerScreen> {
         title: const Text('Confirm'),
         content: const Text('Are you sure you want to exit?'),
         actions: [
-          TextButton(
-            key: const Key('confirm-yes'),
-            onPressed: () {
-              Navigator.of(context).pop();
-              // Simulate exit by showing a snackbar
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Application exited.')),
-              );
-            },
-            child: const Text('Yes'),
+          Semantics(
+            identifier: 'confirm-yes',
+            child: TextButton(
+              key: const Key('confirm-yes'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                // Simulate exit by showing a snackbar
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Application exited.')),
+                );
+              },
+              child: const Text('Yes'),
+            ),
           ),
-          TextButton(
-            key: const Key('confirm-no'),
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('No'),
+          Semantics(
+            identifier: 'confirm-no',
+            child: TextButton(
+              key: const Key('confirm-no'),
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('No'),
+            ),
           ),
         ],
       ),
@@ -161,10 +174,13 @@ class _DateTimeCheckerScreenState extends State<DateTimeCheckerScreen> {
         backgroundColor: const Color(0xFF0078D7),
         foregroundColor: Colors.white,
         actions: [
-          IconButton(
-            key: const Key('close-button'),
-            icon: const Icon(Icons.close),
-            onPressed: _showExitDialog,
+          Semantics(
+            identifier: 'close-button',
+            child: IconButton(
+              key: const Key('close-button'),
+              icon: const Icon(Icons.close),
+              onPressed: _showExitDialog,
+            ),
           ),
         ],
       ),
@@ -174,63 +190,75 @@ class _DateTimeCheckerScreenState extends State<DateTimeCheckerScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Title
-            const Text(
-              'Date Time Checker',
-              key: Key('app-title'),
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue,
+            Semantics(
+              identifier: 'app-title',
+              child: const Text(
+                'Date Time Checker',
+                key: Key('app-title'),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
+                ),
               ),
             ),
             const SizedBox(height: 32),
 
             // Day input
-            TextField(
-              key: const Key('day-input'),
-              controller: _dayController,
-              focusNode: _dayFocus,
-              decoration: const InputDecoration(
-                labelText: 'Day',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.calendar_today),
+            Semantics(
+              identifier: 'day-input',
+              child: TextField(
+                key: const Key('day-input'),
+                controller: _dayController,
+                focusNode: _dayFocus,
+                decoration: const InputDecoration(
+                  labelText: 'Day',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.calendar_today),
+                ),
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                onSubmitted: (_) => _monthFocus.requestFocus(),
               ),
-              keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              onSubmitted: (_) => _monthFocus.requestFocus(),
             ),
             const SizedBox(height: 16),
 
             // Month input
-            TextField(
-              key: const Key('month-input'),
-              controller: _monthController,
-              focusNode: _monthFocus,
-              decoration: const InputDecoration(
-                labelText: 'Month',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.date_range),
+            Semantics(
+              identifier: 'month-input',
+              child: TextField(
+                key: const Key('month-input'),
+                controller: _monthController,
+                focusNode: _monthFocus,
+                decoration: const InputDecoration(
+                  labelText: 'Month',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.date_range),
+                ),
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                onSubmitted: (_) => _yearFocus.requestFocus(),
               ),
-              keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              onSubmitted: (_) => _yearFocus.requestFocus(),
             ),
             const SizedBox(height: 16),
 
             // Year input
-            TextField(
-              key: const Key('year-input'),
-              controller: _yearController,
-              focusNode: _yearFocus,
-              decoration: const InputDecoration(
-                labelText: 'Year',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.event),
+            Semantics(
+              identifier: 'year-input',
+              child: TextField(
+                key: const Key('year-input'),
+                controller: _yearController,
+                focusNode: _yearFocus,
+                decoration: const InputDecoration(
+                  labelText: 'Year',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.event),
+                ),
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.done,
+                onSubmitted: (_) => _checkDate(),
               ),
-              keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.done,
-              onSubmitted: (_) => _checkDate(),
             ),
             const SizedBox(height: 20),
 
@@ -239,29 +267,32 @@ class _DateTimeCheckerScreenState extends State<DateTimeCheckerScreen> {
               const Center(child: CircularProgressIndicator()),
 
             if (_resultMessage != null)
-              Container(
-                key: const Key('result-message'),
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: _isSuccess == true
-                      ? const Color(0xFFD4EDDA)
-                      : const Color(0xFFF8D7DA),
-                  border: Border.all(
+              Semantics(
+                identifier: 'result-message',
+                child: Container(
+                  key: const Key('result-message'),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
                     color: _isSuccess == true
-                        ? const Color(0xFFC3E6CB)
-                        : const Color(0xFFF5C6CB),
+                        ? const Color(0xFFD4EDDA)
+                        : const Color(0xFFF8D7DA),
+                    border: Border.all(
+                      color: _isSuccess == true
+                          ? const Color(0xFFC3E6CB)
+                          : const Color(0xFFF5C6CB),
+                    ),
+                    borderRadius: BorderRadius.circular(6),
                   ),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  _resultMessage!,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                    color: _isSuccess == true
-                        ? const Color(0xFF155724)
-                        : const Color(0xFF721C24),
+                  child: Text(
+                    _resultMessage!,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      color: _isSuccess == true
+                          ? const Color(0xFF155724)
+                          : const Color(0xFF721C24),
+                    ),
                   ),
                 ),
               ),
@@ -272,26 +303,32 @@ class _DateTimeCheckerScreenState extends State<DateTimeCheckerScreen> {
             Row(
               children: [
                 Expanded(
-                  child: OutlinedButton(
-                    key: const Key('clear-button'),
-                    onPressed: _clearFields,
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 14),
+                  child: Semantics(
+                    identifier: 'clear-button',
+                    child: OutlinedButton(
+                      key: const Key('clear-button'),
+                      onPressed: _clearFields,
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      child: const Text('Clear', style: TextStyle(fontSize: 16)),
                     ),
-                    child: const Text('Clear', style: TextStyle(fontSize: 16)),
                   ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
-                  child: ElevatedButton(
-                    key: const Key('check-button'),
-                    onPressed: _isLoading ? null : _checkDate,
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      backgroundColor: const Color(0xFF0078D7),
-                      foregroundColor: Colors.white,
+                  child: Semantics(
+                    identifier: 'check-button',
+                    child: ElevatedButton(
+                      key: const Key('check-button'),
+                      onPressed: _isLoading ? null : _checkDate,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        backgroundColor: const Color(0xFF0078D7),
+                        foregroundColor: Colors.white,
+                      ),
+                      child: const Text('Check', style: TextStyle(fontSize: 16)),
                     ),
-                    child: const Text('Check', style: TextStyle(fontSize: 16)),
                   ),
                 ),
               ],
