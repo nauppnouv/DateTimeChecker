@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Date Time Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            width: 450px;
+            background: white;
+            border: 2px solid #0078d7;
+            box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .window-title-bar {
+            background-color: #0078d7;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 12px;
+            font-size: 14px;
+            font-weight: bold;
+            border-bottom: 1px solid #005a9e;
+            user-select: none;
+        }
+
+        .btn-close {
+            background-color: transparent;
+            color: white;
+            border: none;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 32px;
+            height: 28px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 1;
+            transition: background-color 0.2s;
+            margin-right: -12px;
+        }
+
+        .btn-close:hover {
+            background-color: #e81123;
+        }
+
+        .form-content {
+            padding: 20px;
+        }
+
+        .logo {
+            width: 150px;
+        }
+
+        h1 {
+            color: Blue;
+            font-family: 'Arial';
+            font-size: 26px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .input-group {
+            margin: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .input-group label {
+            width: 80px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            width: 250px;
+            padding: 5px;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 8px 25px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* Modern Inline Result Message Styles */
+        .result-message {
+            margin: 15px 0 5px 0;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 4px;
+            display: none;
+            min-height: 20px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .result-message.success {
+            display: block;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .result-message.error {
+            display: block;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #f0f0f0;
+            border: 1px solid #0078d7;
+            width: 320px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            background-color: #0078d7;
+            color: white;
+            padding: 6px 10px;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .modal-close-x {
+            background: transparent;
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .modal-close-x:hover {
+            color: #e81123;
+        }
+
+        .modal-body {
+            padding: 25px 15px;
+            background: white;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .modal-footer {
+            padding: 10px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            background: #f0f0f0;
+            border-top: 1px solid #ccc;
+        }
+
+        .modal-footer button {
+            padding: 5px 20px;
+            min-width: 75px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="form-container">
+        <!-- Title Bar representing Desktop Window Title -->
+        <div class="window-title-bar">
+            <span class="window-title">Date Time Checker</span>
+            <button id="btnClose" class="btn-close" data-test="close-button">&times;</button>
+        </div>
+
+        <div class="form-content">
+            <img src="fu_logo.png" alt="FU Logo" class="logo">
+            <h1>Date Time Checker</h1>
+            <div class="input-group">
+                <label for="day">Day</label>
+                <input type="text" id="day" data-test="day-input">
+            </div>
+            <div class="input-group">
+                <label for="month">Month</label>
+                <input type="text" id="month" data-test="month-input">
+            </div>
+            <div class="input-group">
+                <label for="year">Year</label>
+                <input type="text" id="year" data-test="year-input">
+            </div>
+
+            <!-- Elegant Inline Message Area below Year -->
+            <div id="resultMessage" class="result-message" data-test="result-message"></div>
+
+            <div class="btn-group">
+                <button id="btnClear" data-test="clear-button">Clear</button>
+                <button id="btnCheck" data-test="check-button">Check</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Windows-style Confirm Message Box Modal -->
+    <div id="confirmModal" class="modal" data-test="confirm-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>Confirm</span>
+                <button class="modal-close-x" id="modalCloseX" data-test="modal-close-x">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to exit?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btnYes" data-test="confirm-yes">Yes</button>
+                <button id="btnNo" data-test="confirm-no">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const btnCheck = document.getElementById('btnCheck');
+        const btnClear = document.getElementById('btnClear');
+
+        const btnClose = document.getElementById('btnClose');
+        const confirmModal = document.getElementById('confirmModal');
+        const btnYes = document.getElementById('btnYes');
+        const btnNo = document.getElementById('btnNo');
+        const modalCloseX = document.getElementById('modalCloseX');
+        const resultMessage = document.getElementById('resultMessage');
+
+        // Chức năng Clear
+        btnClear.onclick = () => {
+            document.getElementById('day').value = '';
+            document.getElementById('month').value = '';
+            document.getElementById('year').value = '';
+
+            // Ẩn vùng hiển thị thông báo
+            resultMessage.style.display = 'none';
+            resultMessage.className = 'result-message';
+            resultMessage.innerText = '';
+
+            // Tự động focus lại ô Day để nhập tiếp
+            document.getElementById('day').focus();
+        };
+
+        // Tự động focus vào ô Day khi tải trang
+        document.getElementById('day').focus();
+
+        // Chuyển đổi focus hoặc tự động Check khi nhấn phím Enter
+        const inputs = ['day', 'month', 'year'].map(id => document.getElementById(id));
+        inputs.forEach((input, index) => {
+            input.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    if (index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                        inputs[index + 1].select(); // Tự động bôi đen giá trị cũ để dễ nhập đè
+                    } else {
+                        btnCheck.click();
+                    }
+                }
+            });
+        });
+
+        // Chức năng Kiểm tra - Gọi dữ liệu lên Server Java thông qua REST API
+        btnCheck.onclick = () => {
+            const dayVal = document.getElementById('day').value;
+            const monthVal = document.getElementById('month').value;
+            const yearVal = document.getElementById('year').value;
+
+            // Gửi request POST tới API Java
+            fetch('/api/check', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    day: dayVal,
+                    month: monthVal,
+                    year: yearVal
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Thay đổi giao diện thông báo dạng text bên dưới Year thay vì dùng alert()
+                    resultMessage.innerText = data.message;
+                    resultMessage.style.display = 'block';
+                    if (data.success) {
+                        resultMessage.className = 'result-message success';
+                    } else {
+                        resultMessage.className = 'result-message error';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    resultMessage.innerText = 'An error occurred while communicating with the server.';
+                    resultMessage.style.display = 'block';
+                    resultMessage.className = 'result-message error';
+                });
+        };
+
+        // Mở modal xác nhận thoát khi click nút "X" màu đỏ ở góc trên bên phải
+        btnClose.onclick = () => {
+            confirmModal.style.display = 'flex';
+        };
+
+        // Đóng modal khi chọn No hoặc X trên modal
+        btnNo.onclick = modalCloseX.onclick = () => {
+            confirmModal.style.display = 'none';
+        };
+
+        // Thoát ứng dụng khi chọn Yes
+        btnYes.onclick = () => {
+            confirmModal.style.display = 'none';
+            // Giả lập thoát ứng dụng bằng cách làm mờ giao diện và vô hiệu hóa tương tác
+            const container = document.querySelector('.form-container');
+            container.style.opacity = '0.15';
+            container.style.pointerEvents = 'none';
+            container.setAttribute('data-exited', 'true');
+        };
+    </script>
+</body>
+
+</html>

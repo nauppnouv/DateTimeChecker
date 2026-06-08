@@ -1,0 +1,15 @@
+{
+  "name": "datetimechecker-tests",
+  "version": "1.0.0",
+  "description": "Playwright tests for Date Time Checker",
+  "main": "index.js",
+  "scripts": {
+    "test:unit": "mvn test",
+    "test:e2e": "playwright test",
+    "test:perf": "k6 run tests/performance/load-test.js",
+    "test:all": "npm run test:unit && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.0"
+  }
+}
