@@ -1,0 +1,1 @@
+A snapshot doesn't exist at /home/runner/work/DateTimeChecker/DateTimeChecker/tests/e2e/visual/visual.spec.ts-snapshots/success-page-chromium-linux.png, writing actual.
